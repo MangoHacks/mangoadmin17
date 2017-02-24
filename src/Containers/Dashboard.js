@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import Auth from '../core/auth';
-import axios from 'axios';
+import api from '../core/api';
 
 import AttendeeTable from '../Components/AttendeeTable';
 
@@ -21,16 +20,14 @@ export default class Dashboard extends Component {
 	}
 
 	fetchAttendees() {
-		var token = Auth.getToken();
-		if (token) {
-			axios.get("http://mango17.dev/api/attendees", {
-				headers: {'Authorization': `Bearer ${token}` }
-			}).then(response => {
-				this.setState((prevState, props) => ({
-					attendees: response.data
-				}));
-			});
-		}
+		api.get('attendees')
+			.then( res => this.setState((prevState, props) => ({attendees: res.data})))
+			.catch(err => console.log(err));
+	}
+
+	checkinAttendee(id, status){
+		api.post(`attendees/${id}`, {checked_in: !status})
+			.then(data => this.fetchAttendees());
 	}
 
 	componentDidMount() {
@@ -51,6 +48,7 @@ export default class Dashboard extends Component {
 					</div>
 					<AttendeeTable
 						attendees={this.state.attendees}
+						checkin={this.checkinAttendee.bind(this)}
 					 />
 				</div>
 			</div>
