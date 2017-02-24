@@ -41,13 +41,13 @@ export default class Login extends Component {
 		const {onLogin} = this.props;
 		const data = {
 	      client_id: 2,
-	      client_secret: 'M319t52QjhTEJMn9VCO319dV3YkfyQzTArxv6nkK',
+	      client_secret: 'iMvCos30gpv7ZwNGLJkYHN3uvm9d4savNLxXEETc',
 	      grant_type: 'password',
 	      username: this.state.username,
 	      password: this.state.password
 	    };
 
-      	axios.post("https://staging.mangohacks.com/oauth/token", data)
+      	axios.post("https://mangohacks.com/oauth/token", data)
 			.then(response => response.data)
 			.then(data => {
 				Auth.setToken(data.access_token, data.expires_in)
